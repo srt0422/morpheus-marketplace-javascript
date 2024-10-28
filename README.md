@@ -28,15 +28,9 @@ import MorpheusMarketplace from 'morpheus-marketplace';
 const client = new MorpheusMarketplace();
 
 async function main() {
-  const model = await client.blockchain.models.create({
-    fee: 'fee',
-    ipfsID: 'ipfsID',
-    modelID: 'modelID',
-    name: 'name',
-    stake: 'stake',
-  });
+  const balance = await client.blockchain.balance.retrieve();
 
-  console.log(model.details);
+  console.log(balance.balance);
 }
 
 main();
@@ -53,14 +47,7 @@ import MorpheusMarketplace from 'morpheus-marketplace';
 const client = new MorpheusMarketplace();
 
 async function main() {
-  const params: MorpheusMarketplace.Blockchain.ModelCreateParams = {
-    fee: 'fee',
-    ipfsID: 'ipfsID',
-    modelID: 'modelID',
-    name: 'name',
-    stake: 'stake',
-  };
-  const model: MorpheusMarketplace.Blockchain.Model = await client.blockchain.models.create(params);
+  const balance: MorpheusMarketplace.Balance = await client.blockchain.balance.retrieve();
 }
 
 main();
@@ -77,17 +64,15 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const model = await client.blockchain.models
-    .create({ fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' })
-    .catch(async (err) => {
-      if (err instanceof MorpheusMarketplace.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
+  const balance = await client.blockchain.balance.retrieve().catch(async (err) => {
+    if (err instanceof MorpheusMarketplace.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 }
 
 main();
@@ -122,7 +107,7 @@ const client = new MorpheusMarketplace({
 });
 
 // Or, configure per-request:
-await client.blockchain.models.create({ fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' }, {
+await client.blockchain.balance.retrieve({
   maxRetries: 5,
 });
 ```
@@ -139,7 +124,7 @@ const client = new MorpheusMarketplace({
 });
 
 // Override per-request:
-await client.blockchain.models.create({ fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' }, {
+await client.blockchain.balance.retrieve({
   timeout: 5 * 1000,
 });
 ```
@@ -160,17 +145,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new MorpheusMarketplace();
 
-const response = await client.blockchain.models
-  .create({ fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' })
-  .asResponse();
+const response = await client.blockchain.balance.retrieve().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: model, response: raw } = await client.blockchain.models
-  .create({ fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' })
-  .withResponse();
+const { data: balance, response: raw } = await client.blockchain.balance.retrieve().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(model.details);
+console.log(balance.balance);
 ```
 
 ### Making custom/undocumented requests
@@ -274,12 +255,9 @@ const client = new MorpheusMarketplace({
 });
 
 // Override per-request:
-await client.blockchain.models.create(
-  { fee: 'fee', ipfsID: 'ipfsID', modelID: 'modelID', name: 'name', stake: 'stake' },
-  {
-    httpAgent: new http.Agent({ keepAlive: false }),
-  },
-);
+await client.blockchain.balance.retrieve({
+  httpAgent: new http.Agent({ keepAlive: false }),
+});
 ```
 
 ## Semantic versioning

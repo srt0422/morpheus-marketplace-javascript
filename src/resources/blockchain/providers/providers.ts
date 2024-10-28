@@ -9,73 +9,57 @@ export class Providers extends APIResource {
   bids: BidsAPI.Bids = new BidsAPI.Bids(this._client);
 
   /**
-   * Registers or updates a provider.
+   * Create a new provider
    */
   create(body: ProviderCreateParams, options?: Core.RequestOptions): Core.APIPromise<Provider> {
     return this._client.post('/blockchain/providers', { body, ...options });
   }
 
   /**
-   * Retrieves a list of all registered providers.
+   * List providers
    */
   list(options?: Core.RequestOptions): Core.APIPromise<ProviderListResponse> {
     return this._client.get('/blockchain/providers', options);
   }
 
   /**
-   * Removes a provider’s registration from the blockchain.
+   * Delete a provider
    */
-  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<ProviderDeleteResponse> {
-    return this._client.delete(`/blockchain/providers/${id}`, options);
+  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.delete(`/blockchain/providers/${id}`, {
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 }
 
 export interface Provider {
-  details?: Provider.Details;
-
   /**
-   * Unique identifier for the provider.
+   * Unique identifier of the provider
    */
-  providerID?: string;
-}
+  id: string;
 
-export namespace Provider {
-  export interface Details {
-    endpoint?: string;
-
-    providerID?: string;
-
-    stake?: string;
-  }
-}
-
-export type ProviderListResponse = Array<ProviderListResponse.ProviderListResponseItem>;
-
-export namespace ProviderListResponse {
-  export interface ProviderListResponseItem {
-    endpoint?: string;
-
-    providerID?: string;
-
-    stake?: string;
-  }
-}
-
-export interface ProviderDeleteResponse {
   /**
-   * Transaction hash.
-   */
-  tx?: string;
-}
-
-export interface ProviderCreateParams {
-  /**
-   * Endpoint URL of the provider.
+   * Endpoint URL of the provider
    */
   endpoint: string;
 
   /**
-   * Amount of tokens staked by the provider.
+   * Amount staked by the provider
+   */
+  stake: string;
+}
+
+export type ProviderListResponse = Array<Provider>;
+
+export interface ProviderCreateParams {
+  /**
+   * Endpoint URL of the provider
+   */
+  endpoint: string;
+
+  /**
+   * Amount to stake for the provider
    */
   stake: string;
 }
@@ -83,8 +67,8 @@ export interface ProviderCreateParams {
 export namespace Providers {
   export import Provider = ProvidersAPI.Provider;
   export import ProviderListResponse = ProvidersAPI.ProviderListResponse;
-  export import ProviderDeleteResponse = ProvidersAPI.ProviderDeleteResponse;
   export import ProviderCreateParams = ProvidersAPI.ProviderCreateParams;
   export import Bids = BidsAPI.Bids;
+  export import BidListResponse = BidsAPI.BidListResponse;
   export import BidListParams = BidsAPI.BidListParams;
 }

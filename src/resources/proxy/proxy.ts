@@ -9,8 +9,7 @@ export class Proxy extends APIResource {
 
 export namespace Proxy {
   export import Sessions = SessionsAPI.Sessions;
-  export import SessionProviderClaimResponse = SessionsAPI.SessionProviderClaimResponse;
-  export import SessionProviderClaimableBalanceResponse = SessionsAPI.SessionProviderClaimableBalanceResponse;
+  export import ClaimableBalance = SessionsAPI.ClaimableBalance;
   export import SessionInitiateParams = SessionsAPI.SessionInitiateParams;
   export import SessionProviderClaimParams = SessionsAPI.SessionProviderClaimParams;
 }

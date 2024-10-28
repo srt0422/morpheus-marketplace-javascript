@@ -99,6 +99,8 @@ export class MorpheusMarketplace extends Core.APIClient {
   }
 
   blockchain: API.Blockchain = new API.Blockchain(this);
+  blockchainBids: API.BlockchainBids = new API.BlockchainBids(this);
+  blockchainSessions: API.BlockchainSessions = new API.BlockchainSessions(this);
   proxy: API.Proxy = new API.Proxy(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
@@ -156,11 +158,26 @@ export namespace MorpheusMarketplace {
   export import RequestOptions = Core.RequestOptions;
 
   export import Blockchain = API.Blockchain;
+  export import Balance = API.Balance;
+  export import BlockchainApproveParams = API.BlockchainApproveParams;
+  export import BlockchainEthSendParams = API.BlockchainEthSendParams;
+  export import BlockchainMorSendParams = API.BlockchainMorSendParams;
+
+  export import BlockchainBids = API.BlockchainBids;
+  export import BlockchainBidCreateParams = API.BlockchainBidCreateParams;
+  export import BlockchainBidSessionParams = API.BlockchainBidSessionParams;
+
+  export import BlockchainSessions = API.BlockchainSessions;
+  export import BlockchainSessionCreateParams = API.BlockchainSessionCreateParams;
+  export import BlockchainSessionProviderParams = API.BlockchainSessionProviderParams;
+  export import BlockchainSessionUserParams = API.BlockchainSessionUserParams;
 
   export import Proxy = API.Proxy;
 
   export import Bid = API.Bid;
+  export import Budget = API.Budget;
   export import Session = API.Session;
+  export import SessionList = API.SessionList;
 }
 
 export default MorpheusMarketplace;

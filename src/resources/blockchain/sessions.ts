@@ -2,4 +2,4 @@
 
 import { APIResource } from '../../resource';
 
-export class Bids extends APIResource {}
+export class Sessions extends APIResource {}
