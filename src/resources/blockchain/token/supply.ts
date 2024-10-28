@@ -6,7 +6,7 @@ import * as SupplyAPI from './supply';
 
 export class Supply extends APIResource {
   /**
-   * Fetches the total supply of MOR tokens.
+   * Get token supply
    */
   retrieve(options?: Core.RequestOptions): Core.APIPromise<TokenSupply> {
     return this._client.get('/blockchain/token/supply', options);
@@ -15,9 +15,9 @@ export class Supply extends APIResource {
 
 export interface TokenSupply {
   /**
-   * Total supply of MOR tokens.
+   * Total supply of the token
    */
-  supply?: string;
+  supply: string;
 }
 
 export namespace Supply {

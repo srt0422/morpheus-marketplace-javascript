@@ -31,7 +31,7 @@ describe('resource bids', () => {
     await expect(
       client.blockchain.models.bids.list(
         'id',
-        { limit: 0, offset: 'offset' },
+        { limit: 10, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(MorpheusMarketplace.NotFoundError);

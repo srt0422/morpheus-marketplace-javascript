@@ -8,8 +8,8 @@ const client = new MorpheusMarketplace({
 });
 
 describe('resource stats', () => {
-  test('retrieve', async () => {
-    const responsePromise = client.blockchain.models.stats.retrieve('id');
+  test('list', async () => {
+    const responsePromise = client.blockchain.models.stats.list('id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -19,10 +19,10 @@ describe('resource stats', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('retrieve: request options instead of params are passed correctly', async () => {
+  test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.blockchain.models.stats.retrieve('id', { path: '/_stainless_unknown_path' }),
+      client.blockchain.models.stats.list('id', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(MorpheusMarketplace.NotFoundError);
   });
 });

@@ -5,52 +5,38 @@ import * as Core from '../../../core';
 import * as ModelsAPI from './models';
 import * as Shared from '../../shared';
 import * as BidsAPI from './bids';
-import * as MinstakeAPI from './minstake';
 import * as StatsAPI from './stats';
 
 export class Models extends APIResource {
   bids: BidsAPI.Bids = new BidsAPI.Bids(this._client);
-  minstake: MinstakeAPI.Minstake = new MinstakeAPI.Minstake(this._client);
   stats: StatsAPI.Stats = new StatsAPI.Stats(this._client);
 
   /**
-   * Registers a new model on the blockchain.
+   * Create a new model
    */
   create(body: ModelCreateParams, options?: Core.RequestOptions): Core.APIPromise<Model> {
     return this._client.post('/blockchain/models', { body, ...options });
   }
 
   /**
-   * Fetches a list of all models available on the blockchain.
+   * List all available models
    */
   list(options?: Core.RequestOptions): Core.APIPromise<ModelListResponse> {
     return this._client.get('/blockchain/models', options);
   }
 
   /**
-   * Removes a model from the blockchain by its ID.
+   * Delete a model
    */
-  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<ModelDeleteResponse> {
-    return this._client.delete(`/blockchain/models/${id}`, options);
+  delete(id: string, options?: Core.RequestOptions): Core.APIPromise<void> {
+    return this._client.delete(`/blockchain/models/${id}`, {
+      ...options,
+      headers: { Accept: '*/*', ...options?.headers },
+    });
   }
 
   /**
-   * Checks if a model exists on the blockchain.
-   */
-  exists(id: string, options?: Core.RequestOptions): Core.APIPromise<ModelExistsResponse> {
-    return this._client.get(`/blockchain/models/${id}/exists`, options);
-  }
-
-  /**
-   * Resets the statistics of a model.
-   */
-  resetstats(id: string, options?: Core.RequestOptions): Core.APIPromise<ModelResetstatsResponse> {
-    return this._client.post(`/blockchain/models/${id}/resetstats`, options);
-  }
-
-  /**
-   * Opens a session with a specific model, associating it with a provider on the
-   * blockchain.
+   * Start a session for a model
    */
   session(
     id: string,
@@ -62,104 +48,79 @@ export class Models extends APIResource {
 }
 
 export interface Model {
-  details?: Model.Details;
-
   /**
-   * Unique identifier for the model.
+   * Unique identifier of the model
    */
-  modelID?: string;
-}
+  id: string;
 
-export namespace Model {
-  export interface Details {
-    fee?: string;
-
-    ipfsID?: string;
-
-    modelID?: string;
-
-    name?: string;
-
-    stake?: string;
-
-    tags?: Array<string>;
-  }
-}
-
-export type ModelListResponse = Array<ModelListResponse.ModelListResponseItem>;
-
-export namespace ModelListResponse {
-  export interface ModelListResponseItem {
-    fee?: string;
-
-    ipfsID?: string;
-
-    modelID?: string;
-
-    name?: string;
-
-    stake?: string;
-
-    tags?: Array<string>;
-  }
-}
-
-export interface ModelDeleteResponse {
   /**
-   * Transaction hash.
-   */
-  tx?: string;
-}
-
-export interface ModelExistsResponse {
-  /**
-   * Indicates whether the model exists.
-   */
-  exists?: boolean;
-}
-
-export interface ModelResetstatsResponse {
-  /**
-   * Success message.
-   */
-  message?: string;
-}
-
-export interface ModelCreateParams {
-  /**
-   * Fee amount required for model usage.
+   * Fee for using the model
    */
   fee: string;
 
   /**
-   * IPFS hash storing the model’s data.
+   * IPFS ID where the model is stored
    */
   ipfsID: string;
 
   /**
-   * Unique identifier for the model.
+   * Model ID provided by the user
    */
   modelID: string;
 
   /**
-   * Name of the model.
+   * Name of the model
    */
   name: string;
 
   /**
-   * Stake amount for the model.
+   * Amount staked for the model
    */
   stake: string;
 
   /**
-   * Descriptive tags for categorizing the model.
+   * Tags associated with the model
+   */
+  tags?: Array<string>;
+}
+
+export type ModelListResponse = Array<Model>;
+
+export interface ModelCreateParams {
+  /**
+   * Fee for using the model
+   */
+  fee: string;
+
+  /**
+   * IPFS ID where the model is stored
+   */
+  ipfsID: string;
+
+  /**
+   * Model ID provided by the user
+   */
+  modelID: string;
+
+  /**
+   * Name of the model
+   */
+  name: string;
+
+  /**
+   * Amount to stake for the model
+   */
+  stake: string;
+
+  /**
+   * Tags associated with the model
    */
   tags?: Array<string>;
 }
 
 export interface ModelSessionParams {
   /**
-   * The duration of the session in seconds.
+   * Duration of the session
    */
   sessionDuration: string;
 }
@@ -167,17 +128,13 @@ export interface ModelSessionParams {
 export namespace Models {
   export import Model = ModelsAPI.Model;
   export import ModelListResponse = ModelsAPI.ModelListResponse;
-  export import ModelDeleteResponse = ModelsAPI.ModelDeleteResponse;
-  export import ModelExistsResponse = ModelsAPI.ModelExistsResponse;
-  export import ModelResetstatsResponse = ModelsAPI.ModelResetstatsResponse;
   export import ModelCreateParams = ModelsAPI.ModelCreateParams;
   export import ModelSessionParams = ModelsAPI.ModelSessionParams;
   export import Bids = BidsAPI.Bids;
+  export import BidListResponse = BidsAPI.BidListResponse;
+  export import BidActiveResponse = BidsAPI.BidActiveResponse;
+  export import BidRatedResponse = BidsAPI.BidRatedResponse;
   export import BidListParams = BidsAPI.BidListParams;
-  export import Minstake = MinstakeAPI.Minstake;
-  export import MinStake = MinstakeAPI.MinStake;
-  export import MinstakeSetResponse = MinstakeAPI.MinstakeSetResponse;
-  export import MinstakeSetParams = MinstakeAPI.MinstakeSetParams;
   export import Stats = StatsAPI.Stats;
   export import ModelStats = StatsAPI.ModelStats;
 }
