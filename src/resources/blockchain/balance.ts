@@ -2,29 +2,13 @@
 
 import { APIResource } from '../../resource';
 import * as Core from '../../core';
-import * as BalanceAPI from './balance';
+import * as BlockchainAPI from './blockchain';
 
-export class BalanceResource extends APIResource {
+export class Balance extends APIResource {
   /**
-   * Retrieves the ETH and MOR token balances of the user.
+   * Retrieve balance
    */
-  retrieve(options?: Core.RequestOptions): Core.APIPromise<Balance> {
+  retrieve(options?: Core.RequestOptions): Core.APIPromise<BlockchainAPI.Balance> {
     return this._client.get('/blockchain/balance', options);
   }
-}
-
-export interface Balance {
-  /**
-   * ETH balance.
-   */
-  ETH?: string;
-
-  /**
-   * MOR token balance.
-   */
-  MOR?: string;
-}
-
-export namespace BalanceResource {
-  export import Balance = BalanceAPI.Balance;
 }

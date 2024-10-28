@@ -9,7 +9,9 @@ const client = new MorpheusMarketplace({
 
 describe('resource bids', () => {
   test('list', async () => {
-    const responsePromise = client.blockchain.providers.bids.list('id');
+    const responsePromise = client.blockchain.providers.bids.list(
+      '0x1234567890abcdef1234567890abcdef12345678',
+    );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +24,9 @@ describe('resource bids', () => {
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.blockchain.providers.bids.list('id', { path: '/_stainless_unknown_path' }),
+      client.blockchain.providers.bids.list('0x1234567890abcdef1234567890abcdef12345678', {
+        path: '/_stainless_unknown_path',
+      }),
     ).rejects.toThrow(MorpheusMarketplace.NotFoundError);
   });
 
@@ -30,8 +34,8 @@ describe('resource bids', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.blockchain.providers.bids.list(
-        'id',
-        { limit: 0, offset: 'offset' },
+        '0x1234567890abcdef1234567890abcdef12345678',
+        { limit: 10, offset: 0 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(MorpheusMarketplace.NotFoundError);

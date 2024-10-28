@@ -8,15 +8,15 @@ import * as Shared from '../../shared';
 
 export class Bids extends APIResource {
   /**
-   * Retrieves a list of bids associated with a specific model.
+   * List bids for a model
    */
-  list(id: string, query?: BidListParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Bid>;
-  list(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Bid>;
+  list(id: string, query?: BidListParams, options?: Core.RequestOptions): Core.APIPromise<BidListResponse>;
+  list(id: string, options?: Core.RequestOptions): Core.APIPromise<BidListResponse>;
   list(
     id: string,
     query: BidListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Shared.Bid> {
+  ): Core.APIPromise<BidListResponse> {
     if (isRequestOptions(query)) {
       return this.list(id, {}, query);
     }
@@ -24,32 +24,56 @@ export class Bids extends APIResource {
   }
 
   /**
-   * Fetches active bids associated with a specific model.
+   * List active bids for a model
    */
-  active(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Bid> {
+  active(id: string, options?: Core.RequestOptions): Core.APIPromise<BidActiveResponse> {
     return this._client.get(`/blockchain/models/${id}/bids/active`, options);
   }
 
   /**
-   * Retrieves rated bids for a specified model.
+   * List rated bids for a model
    */
-  rated(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Bid> {
+  rated(id: string, options?: Core.RequestOptions): Core.APIPromise<BidRatedResponse> {
     return this._client.get(`/blockchain/models/${id}/bids/rated`, options);
   }
 }
 
+export interface BidListResponse {
+  /**
+   * List of bids
+   */
+  bids: Array<Shared.Bid>;
+}
+
+export interface BidActiveResponse {
+  /**
+   * List of bids
+   */
+  bids: Array<Shared.Bid>;
+}
+
+export interface BidRatedResponse {
+  /**
+   * List of bids
+   */
+  bids: Array<Shared.Bid>;
+}
+
 export interface BidListParams {
   /**
-   * Limit for pagination.
+   * Maximum number of results to return
    */
   limit?: number;
 
   /**
-   * Offset for pagination.
+   * Number of results to skip
    */
-  offset?: string;
+  offset?: number;
 }
 
 export namespace Bids {
+  export import BidListResponse = BidsAPI.BidListResponse;
+  export import BidActiveResponse = BidsAPI.BidActiveResponse;
+  export import BidRatedResponse = BidsAPI.BidRatedResponse;
   export import BidListParams = BidsAPI.BidListParams;
 }

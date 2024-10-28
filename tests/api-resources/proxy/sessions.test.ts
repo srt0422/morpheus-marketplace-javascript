@@ -10,8 +10,8 @@ const client = new MorpheusMarketplace({
 describe('resource sessions', () => {
   test('initiate: only required params', async () => {
     const responsePromise = client.proxy.sessions.initiate({
-      modelId: 'modelId',
-      sessionDuration: 'sessionDuration',
+      modelId: 'model_12345',
+      sessionDuration: '3600',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -24,13 +24,13 @@ describe('resource sessions', () => {
 
   test('initiate: required and optional params', async () => {
     const response = await client.proxy.sessions.initiate({
-      modelId: 'modelId',
-      sessionDuration: 'sessionDuration',
+      modelId: 'model_12345',
+      sessionDuration: '3600',
     });
   });
 
   test('providerClaim: only required params', async () => {
-    const responsePromise = client.proxy.sessions.providerClaim('id', { claim: 'claim' });
+    const responsePromise = client.proxy.sessions.providerClaim('id', { claim: 'claim_abc123' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -41,7 +41,7 @@ describe('resource sessions', () => {
   });
 
   test('providerClaim: required and optional params', async () => {
-    const response = await client.proxy.sessions.providerClaim('id', { claim: 'claim' });
+    const response = await client.proxy.sessions.providerClaim('id', { claim: 'claim_abc123' });
   });
 
   test('providerClaimableBalance', async () => {
