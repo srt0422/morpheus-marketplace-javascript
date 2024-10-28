@@ -1,6 +1,6 @@
 {
   "name": "morpheus-marketplace",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "The official TypeScript library for the Morpheus Marketplace API",
   "author": "Morpheus Marketplace <dev-feedback@morpheus-marketplace.com>",
   "types": "dist/index.d.ts",
