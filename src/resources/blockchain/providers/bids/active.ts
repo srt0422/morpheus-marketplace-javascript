@@ -2,13 +2,25 @@
 
 import { APIResource } from '../../../../resource';
 import * as Core from '../../../../core';
+import * as ActiveAPI from './active';
 import * as Shared from '../../../shared';
 
 export class Active extends APIResource {
   /**
-   * Retrieves active bids associated with a specific provider.
+   * List active bids for a provider
    */
-  list(id: string, options?: Core.RequestOptions): Core.APIPromise<Shared.Bid> {
+  list(id: string, options?: Core.RequestOptions): Core.APIPromise<ActiveListResponse> {
     return this._client.get(`/blockchain/providers/${id}/bids/active`, options);
   }
+}
+
+export interface ActiveListResponse {
+  /**
+   * List of bids
+   */
+  bids: Array<Shared.Bid>;
+}
+
+export namespace Active {
+  export import ActiveListResponse = ActiveAPI.ActiveListResponse;
 }

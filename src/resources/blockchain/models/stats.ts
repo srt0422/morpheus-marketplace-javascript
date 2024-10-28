@@ -6,18 +6,23 @@ import * as StatsAPI from './stats';
 
 export class Stats extends APIResource {
   /**
-   * Retrieves the statistics of a model.
+   * Retrieve statistics for a model
    */
-  retrieve(id: string, options?: Core.RequestOptions): Core.APIPromise<ModelStats> {
+  list(id: string, options?: Core.RequestOptions): Core.APIPromise<ModelStats> {
     return this._client.get(`/blockchain/models/${id}/stats`, options);
   }
 }
 
 export interface ModelStats {
   /**
-   * Statistics of the model.
+   * ID of the model
    */
-  stats?: unknown;
+  modelID: string;
+
+  /**
+   * Statistics related to the model
+   */
+  stats: Record<string, unknown>;
 }
 
 export namespace Stats {

@@ -7,70 +7,59 @@ import * as Shared from '../shared';
 
 export class Sessions extends APIResource {
   /**
-   * Initializes a new session with the provider for usage.
+   * Initiate a proxy session
    */
   initiate(body: SessionInitiateParams, options?: Core.RequestOptions): Core.APIPromise<Shared.Session> {
     return this._client.post('/proxy/sessions/initiate', { body, ...options });
   }
 
   /**
-   * Allows a provider to claim their balance for a specific session.
+   * Claim provider balance
    */
   providerClaim(
     id: string,
     body: SessionProviderClaimParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<SessionProviderClaimResponse> {
+  ): Core.APIPromise<ClaimableBalance> {
     return this._client.post(`/proxy/sessions/${id}/providerClaim`, { body, ...options });
   }
 
   /**
-   * Retrieves the claimable balance for a provider from a session.
+   * Get provider claimable balance
    */
-  providerClaimableBalance(
-    id: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<SessionProviderClaimableBalanceResponse> {
+  providerClaimableBalance(id: string, options?: Core.RequestOptions): Core.APIPromise<ClaimableBalance> {
     return this._client.get(`/proxy/sessions/${id}/providerClaimableBalance`, options);
   }
 }
 
-export interface SessionProviderClaimResponse {
+export interface ClaimableBalance {
   /**
-   * Transaction hash.
+   * Amount claimable by the provider
    */
-  tx?: string;
-}
-
-export interface SessionProviderClaimableBalanceResponse {
-  /**
-   * Claimable balance for the provider.
-   */
-  claimableBalance?: string;
+  balance: string;
 }
 
 export interface SessionInitiateParams {
   /**
-   * Model ID for the session.
+   * Model ID to initiate session with
    */
   modelId: string;
 
   /**
-   * Duration for which the session will remain active.
+   * Duration of the session
    */
   sessionDuration: string;
 }
 
 export interface SessionProviderClaimParams {
   /**
-   * Amount to claim.
+   * Claim identifier
    */
   claim: string;
 }
 
 export namespace Sessions {
-  export import SessionProviderClaimResponse = SessionsAPI.SessionProviderClaimResponse;
-  export import SessionProviderClaimableBalanceResponse = SessionsAPI.SessionProviderClaimableBalanceResponse;
+  export import ClaimableBalance = SessionsAPI.ClaimableBalance;
   export import SessionInitiateParams = SessionsAPI.SessionInitiateParams;
   export import SessionProviderClaimParams = SessionsAPI.SessionProviderClaimParams;
 }

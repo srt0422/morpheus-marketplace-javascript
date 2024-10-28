@@ -1,4 +1,4 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Active } from './active';
-export { BidListParams, Bids } from './bids';
+export { ActiveListResponse, Active } from './active';
+export { BidListResponse, BidListParams, Bids } from './bids';

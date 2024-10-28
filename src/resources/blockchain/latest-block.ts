@@ -6,7 +6,7 @@ import * as LatestBlockAPI from './latest-block';
 
 export class LatestBlockResource extends APIResource {
   /**
-   * Retrieves the latest block number from the blockchain.
+   * Get latest block number
    */
   retrieve(options?: Core.RequestOptions): Core.APIPromise<LatestBlock> {
     return this._client.get('/blockchain/latestBlock', options);
@@ -15,9 +15,9 @@ export class LatestBlockResource extends APIResource {
 
 export interface LatestBlock {
   /**
-   * Latest block number.
+   * Latest block number on the blockchain
    */
-  block?: number;
+  blockNumber: string;
 }
 
 export namespace LatestBlockResource {
